@@ -91,6 +91,42 @@ class AuthController extends Controller
         ]);
     }
 
+    public function updateMe(Request $request): JsonResponse
+    {
+        $user = $this->userFromBearerToken($request);
+
+        if (! $user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Token tidak valid.',
+            ], 401);
+        }
+
+        $validated = $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'pangkat' => ['required', 'string', 'max:100'],
+            'nrp' => ['required', 'string', 'max:100', Rule::unique('users', 'nrp')->ignore($user)],
+            'jabatan' => ['nullable', 'string', 'max:255'],
+            'kesatuan' => ['nullable', 'string', 'max:255'],
+            'telegram' => ['nullable', 'string', 'max:100'],
+        ]);
+
+        $user->update([
+            'name' => $validated['name'],
+            'pangkat' => Str::upper($validated['pangkat']),
+            'nrp' => $validated['nrp'],
+            'jabatan' => $validated['jabatan'] ?? null,
+            'kesatuan' => $validated['kesatuan'] ?? null,
+            'telegram' => $validated['telegram'] ?? null,
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Profil berhasil diperbarui.',
+            'data' => $this->userPayload($user->fresh()),
+        ]);
+    }
+
     public function logout(Request $request): JsonResponse
     {
         $user = $this->userFromBearerToken($request);

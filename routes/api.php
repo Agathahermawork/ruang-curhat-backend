@@ -16,6 +16,7 @@ Route::get('/health', function () {
 Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/register', [AuthController::class, 'register']);
 Route::get('/auth/me', [AuthController::class, 'me']);
+Route::match(['put', 'patch'], '/auth/me', [AuthController::class, 'updateMe']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 
 Route::apiResource('counselors', CounselorController::class);
