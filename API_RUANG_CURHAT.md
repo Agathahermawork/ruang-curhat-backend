@@ -1,5 +1,11 @@
 # API Ruang Curhat
 
+Base URL production:
+
+```text
+https://arjuno.my.id/api
+```
+
 Base URL lokal Laravel:
 
 ```text
