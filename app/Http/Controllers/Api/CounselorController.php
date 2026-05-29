@@ -11,7 +11,7 @@ use Illuminate\Validation\Rule;
 
 class CounselorController extends Controller
 {
-    private const RELIGIONS = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha'];
+    private const RELIGIONS = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu'];
 
     public function index(Request $request): JsonResponse
     {

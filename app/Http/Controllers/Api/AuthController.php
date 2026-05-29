@@ -109,16 +109,23 @@ class AuthController extends Controller
             'jabatan' => ['nullable', 'string', 'max:255'],
             'kesatuan' => ['nullable', 'string', 'max:255'],
             'telegram' => ['nullable', 'string', 'max:100'],
+            'password' => ['nullable', 'string', 'min:6'],
         ]);
 
-        $user->update([
+        $payload = [
             'name' => $validated['name'],
             'pangkat' => Str::upper($validated['pangkat']),
             'nrp' => $validated['nrp'],
             'jabatan' => $validated['jabatan'] ?? null,
             'kesatuan' => $validated['kesatuan'] ?? null,
             'telegram' => $validated['telegram'] ?? null,
-        ]);
+        ];
+
+        if (! empty($validated['password'])) {
+            $payload['password'] = $validated['password'];
+        }
+
+        $user->update($payload);
 
         return response()->json([
             'success' => true,
